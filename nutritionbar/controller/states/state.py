@@ -1,0 +1,1 @@
+# Defines a class for a state
