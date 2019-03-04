@@ -10,7 +10,6 @@ def index():
 		fval = request.params.get('fval', type=int)
 		cval = request.params.get('cval', type=int)
 		granolapods.newRequestCallback(pval, fval, cval)
-		time.sleep(5)
 	return template('./htdocs/index.html')
 
 @route('/static/<filename>')

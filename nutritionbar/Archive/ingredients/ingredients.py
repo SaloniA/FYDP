@@ -1,1 +1,0 @@
-# Defines the different ingredients used in the project
