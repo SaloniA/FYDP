@@ -90,50 +90,62 @@ def newRequestCallback(pval, fval, cval):
 	print("Protein: " +str(pval) + "%")
 	print("Fat: " +str(fval) + "%")
 	print("Carbs: " + str(cval) + "%\n")
-	sendCommand(0x4, Command.CUP_EJECT.value,0,0,0)
-	time.sleep(2)
-	sendCommand(0x4, Command.STEPPER_MOVE.value, Direction.CW.value, 60, 0)
-	waitOnUnity(0x4, Command.WAIT_HALL.value,Result.TRUE.value)
-	sendCommand(0x4, Command.STEPPER_STOP.value,0,0,0)
-	time.sleep(1)
-	sendCommand(0x4, Command.STEPPER_MOVE.value, Direction.CCW.value, 100, 0)
-	time.sleep(3)
-	sendCommand(0x4, Command.STEPPER_STOP.value,0,0,0)
+	
+	
+	beginProcess()
 
 
 def beginProcess():
 	#Calibrate Gantry Cart
-	sendCommand(0xA,Command.STEPPER_MOVE,Direction.CW,60,0)
-	waitOnUnity(0xA,Command.WAIT_SWITCH,Result.TRUE)
+	sendCommand(0xA,Command.STEPPER_MOVE.value,Direction.CW.value,60,0)
+	waitOnUnity(0xA,Command.WAIT_SWITCH.value,Result.TRUE.value)
+	sendCommand(0xA,Command.STEPPER_STOP.value,0,0,0)
+	time.sleep(1)
+
+	#Eject Cup
+	sendCommand(0x3, Command.CUP_EJECT.value,0,0,0)
+	time.sleep(2)
 
 	#Move Cart to First Ingredient
-	sendCommand(0xA,Command.STEPPER_MOVE,Direction.CCW,150,0)
-	waitOnUnity(0x3,Command.WAIT_HALL,Result.TRUE)
-	sendCommand(0xA,Command.STEPPER_STOP,0,0,0)
+	sendCommand(0xA,Command.STEPPER_MOVE.value,Direction.CCW.value,150,0)
+	waitOnUnity(0x4,Command.WAIT_HALL.value,Result.TRUE.value)
+	sendCommand(0xA,Command.STEPPER_STOP.value,0,0,0)
 	time.sleep(1)
 
 	#Dispense First Ingredient
-	sendCommand(0x3,Command.STEPPER_MOVE,Direction.CW,40,0)
+	sendCommand(0x4,Command.STEPPER_MOVE.value,Direction.CW.value,40,0)
 	time.sleep(0.5)
-	sendCommand(0x3,Command.STEPPER_STOP,0,0,0)
+	sendCommand(0x5,Command.STEPPER_STOP.value,0,0,0)
 	time.sleep(2)
 
 	#Move Cart to Second Ingredients
-	sendCommand(0xA,Command.STEPPER_MOVE,Direction.CCW,150,0)
-	waitOnUnity(0x4,Command.WAIT_HALL,Result.TRUE)
-	sendCommand(0xA,Command.STEPPER_STOP,0,0,0)
+	sendCommand(0xA,Command.STEPPER_MOVE.value,Direction.CCW.value,150,0)
+	waitOnUnity(0x5,Command.WAIT_HALL.value,Result.TRUE.value)
+	sendCommand(0xA,Command.STEPPER_STOP.value,0,0,0)
 	time.sleep(1)
 
 	#Dispense Second Ingredient
-	sendCommand(0x4,Command.STEPPER_MOVE,Direction.CW,40,0)
+	sendCommand(0x5,Command.STEPPER_MOVE.value,Direction.CW.value,40,0)
 	time.sleep(0.5)
-	sendCommand(0x4,Command.STEPPER_STOP,0,0,0)
+	sendCommand(0x5,Command.STEPPER_STOP.value,0,0,0)
 	time.sleep(2)
 
+	#Move Cart to Third Ingredient
+	sendCommand(0xA,Command.STEPPER_MOVE.value,Direction.CCW.value,150,0)
+	waitOnUnity(0x6,Command.WAIT_HALL.value,Result.TRUE.value)
+	sendCommand(0xA,Command.STEPPER_STOP.value,0,0,0)
+	time.sleep(1)
+
+	#Dispense Third Ingredient
+	sendCommand(0x6,Command.STEPPER_MOVE.value,Direction.CW.value,40,0)
+	time.sleep(0.5)
+	sendCommand(0x6,Command.STEPPER_STOP.value,0,0,0)
+	time.sleep(2)
+	
 	#Continue To End
 	sendCommand(0xA,Command.STEPPER_MOVE,Direction.CCW,60,0)
 	waitOnUnity(0xA,Command.WAIT_SWITCH,Result.TRUE)
-
+	sendCommand(0xA,Command.STEPPER_STOP.value,0,0,0)
 
 	print("\nGranolaPod Complete! Returning to UI.\n")
 	time.sleep(3)
