@@ -120,7 +120,7 @@ def beginProcess():
 	#Dispense First Ingredient
 	sendCommand(0x4,Command.STEPPER_MOVE.value,Direction.CW.value,40,0)
 	time.sleep(0.5)
-	sendCommand(0x5,Command.STEPPER_STOP.value,0,0,0)
+	sendCommand(0x4,Command.STEPPER_STOP.value,0,0,0)
 	time.sleep(2)
 
 	#Move Cart to Second Ingredients
