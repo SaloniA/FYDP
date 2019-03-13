@@ -19,4 +19,4 @@ def server_static(filename):
 	return static_file(filename, root='./htdocs/')
 	
 if __name__ == '__main__':
-	run(reLoader=True, debug=True)
+	run(host='0.0.0.0', reLoader=True, debug=True)

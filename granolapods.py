@@ -2,23 +2,46 @@
 
 import smbus
 import time
+from enum import Enum
+
+class Direction(Enum):
+	CCW = 1
+	CW = 2
+
+class Command(Enum):
+	STEPPER_MOVE = 0x01
+	STEPPER_STOP = 0x04
+	WAIT_SWITCH = 0x05
+	WAIT_HALL = 0x11
+	REQUEST = 0xAA
+	CUP_EJECT = 0x20
+
+class Result(Enum):
+	TRUE = 1
+	FALSE = 0
 
 bus = smbus.SMBus(1)
 
-def writeNumber(address, value):
-	bus.write_byte(address, value)
-	return -1
-
-def readNumber(address):
-	number = bus.read_byte(address)
-	return number
 
 def readData(address):
-	time.sleep(0.01)
-	value =  bus.read_i2c_block_data(address,0)
-	return value
+	value = None
+
+	while (value is None):
+		try:
+			value = bus.read_i2c_block_data(address,0,2)
+		except:
+			print("read error!")
+			pass
+
+	parsedValue = value[0:2]
+	print(parsedValue) 
+
+	return parsedValue
+#	value = bus.read_byte_data(address,3)
+#	return value
 
 def sendCommand(address, command, p1,p2,p3):
+
 	#Commands:
 	# Stepper Direction (1 for CCW and 2 for CW). Speed (RPM)
 	# 0x01: Stepper Free Rotate (direction, speed, 0)
@@ -28,6 +51,7 @@ def sendCommand(address, command, p1,p2,p3):
 	# 0x05: Calibrate (0,0,0)
 	# 0x10: Request Stepper (0,0,0)
 	# 0x11: Request Hall Sensor (0,0,0)
+	# 0x20: Dispense Cup
 	# 0xaa: Wait (command, response)
 	data = [command, p1, p2, p3]
 	print("Sending command: " + str(command) + " to " + str(address) + " with args " + str(p1) + ", " + str(p2) + ", " + str(p3) + ".")
@@ -35,21 +59,26 @@ def sendCommand(address, command, p1,p2,p3):
 		bus.write_i2c_block_data(address,0,data)
 	except:
 		pass
-	time.sleep(0.01)
 
 def waitOnUnity(address,command,response):
 	#poll for data on that address until event is tripped (or 20 seconds)
 	print("Waiting on Unity at " + str(address) + " for " + str(response) + " response to command " + str(command) + ".")
-	sendCommand(address,0xaa,command,response,0)
 
 	pollCount = 0;
-	data = readData(address)
+	maxPollCount = 1000;
+	data = None
 
-	while (data[1] is not response) and (pollCount < 20):
-		data = readData(address)
+	while (data is None) or ((data[1] is not response) and (pollCount < maxPollCount)):
+		try:
+			sendCommand(address,0xaa,command,response,0)
+			data = readData(address)
+		except:
+			print("i2c read hiccup!")
+			pass
+		print(pollCount)
 		pollCount=pollCount+1
-		time.sleep(1)
-	if pollCount is 20:
+		time.sleep(0.1)
+	if pollCount is maxPollCount:
 		print("[!] i2c read error or Unity process incomplete")
 		return False
 	else:
@@ -61,34 +90,50 @@ def newRequestCallback(pval, fval, cval):
 	print("Protein: " +str(pval) + "%")
 	print("Fat: " +str(fval) + "%")
 	print("Carbs: " + str(cval) + "%\n")
-	#New Request Received. Perform the following actions:
-	#sendCommand(0x9,0x1,1,60,0)
-	#time.sleep(1)
-	#sendCommand(0x9,0x4,0,0,0)
+	sendCommand(0x4, Command.CUP_EJECT.value,0,0,0)
+	time.sleep(2)
+	sendCommand(0x4, Command.STEPPER_MOVE.value, Direction.CW.value, 60, 0)
+	waitOnUnity(0x4, Command.WAIT_HALL.value,Result.TRUE.value)
+	sendCommand(0x4, Command.STEPPER_STOP.value,0,0,0)
+	time.sleep(1)
+	sendCommand(0x4, Command.STEPPER_MOVE.value, Direction.CCW.value, 100, 0)
+	time.sleep(3)
+	sendCommand(0x4, Command.STEPPER_STOP.value,0,0,0)
+
+
+def beginProcess():
 	#Calibrate Gantry Cart
-	sendCommand(0xA,0x1,1,60,0)
-	waitOnUnity(0xA,0x5,1)
+	sendCommand(0xA,Command.STEPPER_MOVE,Direction.CW,60,0)
+	waitOnUnity(0xA,Command.WAIT_SWITCH,Result.TRUE)
 
 	#Move Cart to First Ingredient
-	sendCommand(0xA,0x1,2,150,0)
-	waitOnUnity(0x9,0x11,1)
-	sendCommand(0xA,0x4,0,0,0)
-	time.sleep(1)
-	sendCommand(0xA,0x1,1,20,0)
-	time.sleep(2)
-	sendCommand(0xA,0x4,0,0,0)
+	sendCommand(0xA,Command.STEPPER_MOVE,Direction.CCW,150,0)
+	waitOnUnity(0x3,Command.WAIT_HALL,Result.TRUE)
+	sendCommand(0xA,Command.STEPPER_STOP,0,0,0)
 	time.sleep(1)
 
-	#Dispense Ingredient
-	sendCommand(0x9,0x1,1,40,0)
-	time.sleep(2)
-	sendCommand(0x9,0x4,0,0,0)
+	#Dispense First Ingredient
+	sendCommand(0x3,Command.STEPPER_MOVE,Direction.CW,40,0)
+	time.sleep(0.5)
+	sendCommand(0x3,Command.STEPPER_STOP,0,0,0)
 	time.sleep(2)
 
-	#Move Cart Away From Ingredient
-	sendCommand(0xA,0x1,2,150,0)
-	time.sleep(3)
-	sendCommand(0xA,0x4,0,0,0)
+	#Move Cart to Second Ingredients
+	sendCommand(0xA,Command.STEPPER_MOVE,Direction.CCW,150,0)
+	waitOnUnity(0x4,Command.WAIT_HALL,Result.TRUE)
+	sendCommand(0xA,Command.STEPPER_STOP,0,0,0)
+	time.sleep(1)
+
+	#Dispense Second Ingredient
+	sendCommand(0x4,Command.STEPPER_MOVE,Direction.CW,40,0)
+	time.sleep(0.5)
+	sendCommand(0x4,Command.STEPPER_STOP,0,0,0)
+	time.sleep(2)
+
+	#Continue To End
+	sendCommand(0xA,Command.STEPPER_MOVE,Direction.CCW,60,0)
+	waitOnUnity(0xA,Command.WAIT_SWITCH,Result.TRUE)
+
 
 	print("\nGranolaPod Complete! Returning to UI.\n")
 	time.sleep(3)
