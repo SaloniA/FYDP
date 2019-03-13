@@ -99,7 +99,7 @@ def newRequestCallback(pval, fval, cval):
 
 def beginProcess():
 	#Calibrate Gantry Cart
-	sendCommand(0xA,Command.STEPPER_MOVE.value,Direction.CW.value,40,0)
+	sendCommand(0xA,Command.STEPPER_MOVE.value,Direction.CW.value,60,0)
 	waitOnUnity(0xA,Command.WAIT_SWITCH.value,Result.TRUE.value)
 	sendCommand(0xA,Command.STEPPER_STOP.value,0,0,0)
 	sendCommand(0x4,Command.CLEAR_POLL.value,0,0,0)
@@ -112,9 +112,9 @@ def beginProcess():
 	time.sleep(5)
 
 	#Move Cart to First Ingredient
-	sendCommand(0xA,Command.STEPPER_MOVE.value,Direction.CCW.value,60,0)
+	sendCommand(0xA,Command.STEPPER_MOVE.value,Direction.CCW.value,120,0)
 	waitOnUnity(0x4,Command.WAIT_HALL.value,Result.TRUE.value)
-	time.sleep(0.5)
+	time.sleep(0.25)
 	sendCommand(0xA,Command.STEPPER_STOP.value,0,0,0)
 	time.sleep(1)
 
@@ -125,9 +125,9 @@ def beginProcess():
 	time.sleep(2)
 
 	#Move Cart to Second Ingredients
-	sendCommand(0xA,Command.STEPPER_MOVE.value,Direction.CCW.value,60,0)
+	sendCommand(0xA,Command.STEPPER_MOVE.value,Direction.CCW.value,120,0)
 	waitOnUnity(0x5,Command.WAIT_HALL.value,Result.TRUE.value)
-	time.sleep(0.5)
+	time.sleep(0.25)
 	sendCommand(0xA,Command.STEPPER_STOP.value,0,0,0)
 	time.sleep(1)
 
@@ -138,9 +138,9 @@ def beginProcess():
 	time.sleep(2)
 
 	#Move Cart to Third Ingredient
-	sendCommand(0xA,Command.STEPPER_MOVE.value,Direction.CCW.value,60,0)
+	sendCommand(0xA,Command.STEPPER_MOVE.value,Direction.CCW.value,120,0)
 	waitOnUnity(0x6,Command.WAIT_HALL.value,Result.TRUE.value)
-	time.sleep(0.5)
+	time.sleep(0.25)
 	sendCommand(0xA,Command.STEPPER_STOP.value,0,0,0)
 	time.sleep(1)
 
@@ -154,6 +154,12 @@ def beginProcess():
 	sendCommand(0xA,Command.STEPPER_MOVE.value,Direction.CCW.value,40,0)
 	waitOnUnity(0xA,Command.WAIT_SWITCH.value,Result.TRUE.value)
 	sendCommand(0xA,Command.STEPPER_STOP.value,0,0,0)
+
+	sendCommand(0x3,Command.CLEAR_POLL.value,0,0,0)
+	sendCommand(0x4,Command.CLEAR_POLL.value,0,0,0)
+	sendCommand(0x5,Command.CLEAR_POLL.value,0,0,0)
+	sendCommand(0x6,Command.CLEAR_POLL.value,0,0,0)
+	sendCommand(0xA,Command.CLEAR_POLL.value,0,0,0)
 
 	print("\nGranolaPod Complete! Returning to UI.\n")
 	time.sleep(3)
