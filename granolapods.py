@@ -105,11 +105,11 @@ def beginProcess():
 	sendCommand(0x4,Command.CLEAR_POLL.value,0,0,0)
 	sendCommand(0x5,Command.CLEAR_POLL.value,0,0,0)
 	sendCommand(0x6,Command.CLEAR_POLL.value,0,0,0)
-	time.sleep(1)
+	time.sleep(2)
 
 	#Eject Cup
 	sendCommand(0x3, Command.CUP_EJECT.value,0,0,0)
-	time.sleep(2)
+	time.sleep(5)
 
 	#Move Cart to First Ingredient
 	sendCommand(0xA,Command.STEPPER_MOVE.value,Direction.CCW.value,60,0)
@@ -148,8 +148,8 @@ def beginProcess():
 	time.sleep(2)
 	
 	#Continue To End
-	sendCommand(0xA,Command.STEPPER_MOVE,Direction.CCW,40,0)
-	waitOnUnity(0xA,Command.WAIT_SWITCH,Result.TRUE)
+	sendCommand(0xA,Command.STEPPER_MOVE.value,Direction.CCW.value,40,0)
+	waitOnUnity(0xA,Command.WAIT_SWITCH.value,Result.TRUE.value)
 	sendCommand(0xA,Command.STEPPER_STOP.value,0,0,0)
 
 	print("\nGranolaPod Complete! Returning to UI.\n")
