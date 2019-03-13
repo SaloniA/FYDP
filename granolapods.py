@@ -152,7 +152,7 @@ def beginProcess():
 	time.sleep(2)
 	
 	#Continue To End
-	sendCommand(0xA,Command.STEPPER_MOVE.value,Direction.CCW.value,40,0)
+	sendCommand(0xA,Command.STEPPER_MOVE.value,Direction.CCW.value,30,0)
 	time.sleep(0.2)
 	sendCommand(0xA,Command.STEPPER_MOVE.value,Direction.CCW.value,60,0)
 	time.sleep(0.2)
