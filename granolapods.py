@@ -114,6 +114,7 @@ def beginProcess():
 	#Move Cart to First Ingredient
 	sendCommand(0xA,Command.STEPPER_MOVE.value,Direction.CCW.value,60,0)
 	waitOnUnity(0x4,Command.WAIT_HALL.value,Result.TRUE.value)
+	time.sleep(0.5)
 	sendCommand(0xA,Command.STEPPER_STOP.value,0,0,0)
 	time.sleep(1)
 
@@ -126,6 +127,7 @@ def beginProcess():
 	#Move Cart to Second Ingredients
 	sendCommand(0xA,Command.STEPPER_MOVE.value,Direction.CCW.value,60,0)
 	waitOnUnity(0x5,Command.WAIT_HALL.value,Result.TRUE.value)
+	time.sleep(0.5)
 	sendCommand(0xA,Command.STEPPER_STOP.value,0,0,0)
 	time.sleep(1)
 
@@ -138,6 +140,7 @@ def beginProcess():
 	#Move Cart to Third Ingredient
 	sendCommand(0xA,Command.STEPPER_MOVE.value,Direction.CCW.value,60,0)
 	waitOnUnity(0x6,Command.WAIT_HALL.value,Result.TRUE.value)
+	time.sleep(0.5)
 	sendCommand(0xA,Command.STEPPER_STOP.value,0,0,0)
 	time.sleep(1)
 
