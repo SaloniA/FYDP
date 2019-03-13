@@ -5,13 +5,14 @@ import time
 from enum import Enum
 
 class Direction(Enum):
-	CCW = 1
-	CW = 2
+	CCW = 2
+	CW = 1
 
 class Command(Enum):
 	STEPPER_MOVE = 0x01
 	STEPPER_STOP = 0x04
 	WAIT_SWITCH = 0x05
+	CLEAR_POLL = 0x10
 	WAIT_HALL = 0x11
 	REQUEST = 0xAA
 	CUP_EJECT = 0x20
@@ -49,10 +50,11 @@ def sendCommand(address, command, p1,p2,p3):
 	# 0x03: Stepper Steps Rotate (direction, speed, steps)
 	# 0x04: Stepper Stop (0,0,0)
 	# 0x05: Calibrate (0,0,0)
-	# 0x10: Request Stepper (0,0,0)
+	# 0x10: Clear States (0,0,0)
 	# 0x11: Request Hall Sensor (0,0,0)
 	# 0x20: Dispense Cup
 	# 0xaa: Wait (command, response)
+	# 0x
 	data = [command, p1, p2, p3]
 	print("Sending command: " + str(command) + " to " + str(address) + " with args " + str(p1) + ", " + str(p2) + ", " + str(p3) + ".")
 	try:
@@ -97,9 +99,12 @@ def newRequestCallback(pval, fval, cval):
 
 def beginProcess():
 	#Calibrate Gantry Cart
-	sendCommand(0xA,Command.STEPPER_MOVE.value,Direction.CW.value,60,0)
+	sendCommand(0xA,Command.STEPPER_MOVE.value,Direction.CW.value,40,0)
 	waitOnUnity(0xA,Command.WAIT_SWITCH.value,Result.TRUE.value)
 	sendCommand(0xA,Command.STEPPER_STOP.value,0,0,0)
+	sendCommand(0x4,Command.CLEAR_POLL.value,0,0,0)
+	sendCommand(0x5,Command.CLEAR_POLL.value,0,0,0)
+	sendCommand(0x6,Command.CLEAR_POLL.value,0,0,0)
 	time.sleep(1)
 
 	#Eject Cup
@@ -107,7 +112,7 @@ def beginProcess():
 	time.sleep(2)
 
 	#Move Cart to First Ingredient
-	sendCommand(0xA,Command.STEPPER_MOVE.value,Direction.CCW.value,150,0)
+	sendCommand(0xA,Command.STEPPER_MOVE.value,Direction.CCW.value,60,0)
 	waitOnUnity(0x4,Command.WAIT_HALL.value,Result.TRUE.value)
 	sendCommand(0xA,Command.STEPPER_STOP.value,0,0,0)
 	time.sleep(1)
@@ -119,7 +124,7 @@ def beginProcess():
 	time.sleep(2)
 
 	#Move Cart to Second Ingredients
-	sendCommand(0xA,Command.STEPPER_MOVE.value,Direction.CCW.value,150,0)
+	sendCommand(0xA,Command.STEPPER_MOVE.value,Direction.CCW.value,60,0)
 	waitOnUnity(0x5,Command.WAIT_HALL.value,Result.TRUE.value)
 	sendCommand(0xA,Command.STEPPER_STOP.value,0,0,0)
 	time.sleep(1)
@@ -131,7 +136,7 @@ def beginProcess():
 	time.sleep(2)
 
 	#Move Cart to Third Ingredient
-	sendCommand(0xA,Command.STEPPER_MOVE.value,Direction.CCW.value,150,0)
+	sendCommand(0xA,Command.STEPPER_MOVE.value,Direction.CCW.value,60,0)
 	waitOnUnity(0x6,Command.WAIT_HALL.value,Result.TRUE.value)
 	sendCommand(0xA,Command.STEPPER_STOP.value,0,0,0)
 	time.sleep(1)
@@ -143,7 +148,7 @@ def beginProcess():
 	time.sleep(2)
 	
 	#Continue To End
-	sendCommand(0xA,Command.STEPPER_MOVE,Direction.CCW,60,0)
+	sendCommand(0xA,Command.STEPPER_MOVE,Direction.CCW,40,0)
 	waitOnUnity(0xA,Command.WAIT_SWITCH,Result.TRUE)
 	sendCommand(0xA,Command.STEPPER_STOP.value,0,0,0)
 
