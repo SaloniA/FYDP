@@ -105,7 +105,8 @@ def beginProcess():
 	sendCommand(0x4,Command.CLEAR_POLL.value,0,0,0)
 	sendCommand(0x5,Command.CLEAR_POLL.value,0,0,0)
 	sendCommand(0x6,Command.CLEAR_POLL.value,0,0,0)
-	time.sleep(2)
+	sendCommand(0xA,Command.CLEAR_POLL.value,0,0,0)
+	time.sleep(0.5)
 
 	#Eject Cup
 	sendCommand(0x3, Command.CUP_EJECT.value,0,0,0)
