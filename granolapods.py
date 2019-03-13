@@ -151,6 +151,10 @@ def beginProcess():
 	time.sleep(2)
 	
 	#Continue To End
+	sendCommand(0xA,Command.STEPPER_MOVE.value,Direction.CCW.value,120,0)
+	time.sleep(0.2);
+	sendCommand(0xA,Command.STEPPER_MOVE.value,Direction.CCW.value,60,0)
+	time.sleep(0.2);
 	sendCommand(0xA,Command.STEPPER_MOVE.value,Direction.CCW.value,40,0)
 	waitOnUnity(0xA,Command.WAIT_SWITCH.value,Result.TRUE.value)
 	sendCommand(0xA,Command.STEPPER_STOP.value,0,0,0)
