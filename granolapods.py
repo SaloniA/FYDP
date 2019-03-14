@@ -103,6 +103,7 @@ def beginProcess():
 	sendCommand(0x5,Command.CLEAR_POLL.value,0,0,0)
 	sendCommand(0x6,Command.CLEAR_POLL.value,0,0,0)
 	sendCommand(0xA,Command.CLEAR_POLL.value,0,0,0)
+	time.sleep(0.5)
 	sendCommand(0xA,Command.STEPPER_MOVE.value,Direction.CW.value,120,0)
 	waitOnUnity(0xA,Command.WAIT_SWITCH.value,Result.TRUE.value)
 	sendCommand(0xA,Command.STEPPER_STOP.value,0,0,0)
