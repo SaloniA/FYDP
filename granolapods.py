@@ -35,7 +35,7 @@ def readData(address):
 			pass
 
 	parsedValue = value[0:2]
-	print(parsedValue) 
+	print(parsedValue)
 
 	return parsedValue
 #	value = bus.read_byte_data(address,3)
@@ -92,14 +92,18 @@ def newRequestCallback(pval, fval, cval):
 	print("Protein: " +str(pval) + "%")
 	print("Fat: " +str(fval) + "%")
 	print("Carbs: " + str(cval) + "%\n")
-	
-	
+
+
 	beginProcess()
 
 
 def beginProcess():
 	#Calibrate Gantry Cart
-	sendCommand(0xA,Command.STEPPER_MOVE.value,Direction.CW.value,60,0)
+	sendCommand(0x4,Command.CLEAR_POLL.value,0,0,0)
+	sendCommand(0x5,Command.CLEAR_POLL.value,0,0,0)
+	sendCommand(0x6,Command.CLEAR_POLL.value,0,0,0)
+	sendCommand(0xA,Command.CLEAR_POLL.value,0,0,0)
+	sendCommand(0xA,Command.STEPPER_MOVE.value,Direction.CW.value,120,0)
 	waitOnUnity(0xA,Command.WAIT_SWITCH.value,Result.TRUE.value)
 	sendCommand(0xA,Command.STEPPER_STOP.value,0,0,0)
 	sendCommand(0x4,Command.CLEAR_POLL.value,0,0,0)
@@ -150,7 +154,7 @@ def beginProcess():
 	time.sleep(0.5)
 	sendCommand(0x6,Command.STEPPER_STOP.value,0,0,0)
 	time.sleep(2)
-	
+
 	#Continue To End
 	sendCommand(0xA,Command.STEPPER_MOVE.value,Direction.CCW.value,30,0)
 	time.sleep(0.2)
