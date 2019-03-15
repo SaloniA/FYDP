@@ -34,48 +34,48 @@
 		}
 		
 		function pUp(){
-			if(proteinVal <= 80){
-				proteinVal+=20;
+			if(proteinVal <= 7.2){
+				proteinVal+=2.4;
 			}
 			document.getElementById("pval").innerHTML = proteinVal + 'g';
 			checkPercent();
 		}
 		
 		function pDown(){
-			if(proteinVal >=20){
-				proteinVal-=20;
+			if(proteinVal >=2.4){
+				proteinVal-=2.4;
 			}
 			document.getElementById("pval").innerHTML = proteinVal + 'g';
 			checkPercent();
 		}
 		
 		function fUp(){
-			if(fatVal <= 80){
-				fatVal+=20;
+			if(fatVal <= 18.36){
+				fatVal+=6.12;
 			}
 			document.getElementById("fval").innerHTML = fatVal + 'g';
 			checkPercent();
 		}
 		
 		function fDown(){
-			if(fatVal >= 20){
-				fatVal-=20;
+			if(fatVal >= 6.12){
+				fatVal-=6.12;
 			}
 			document.getElementById("fval").innerHTML = fatVal + 'g';
 			checkPercent();
 		}
 		
 		function cUp(){
-			if(carbVal <= 80){
-				carbVal+=20;
+			if(carbVal <= 36.9){
+				carbVal+=12.3;
 			}
 			document.getElementById("cval").innerHTML = carbVal + 'g';
 			checkPercent();
 		}
 		
 		function cDown(){
-			if(carbVal >= 20){
-				carbVal-=20;
+			if(carbVal >= 12.3){
+				carbVal-=12.3;
 			}
 			document.getElementById("cval").innerHTML = carbVal + 'g';
 			checkPercent();
