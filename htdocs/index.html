@@ -37,7 +37,7 @@
 			if(proteinVal <= 80){
 				proteinVal+=20;
 			}
-			document.getElementById("pval").innerHTML = proteinVal + '%';
+			document.getElementById("pval").innerHTML = proteinVal + 'g';
 			checkPercent();
 		}
 		
@@ -45,7 +45,7 @@
 			if(proteinVal >=20){
 				proteinVal-=20;
 			}
-			document.getElementById("pval").innerHTML = proteinVal + '%';
+			document.getElementById("pval").innerHTML = proteinVal + 'g';
 			checkPercent();
 		}
 		
@@ -53,7 +53,7 @@
 			if(fatVal <= 80){
 				fatVal+=20;
 			}
-			document.getElementById("fval").innerHTML = fatVal + '%';
+			document.getElementById("fval").innerHTML = fatVal + 'g';
 			checkPercent();
 		}
 		
@@ -61,7 +61,7 @@
 			if(fatVal >= 20){
 				fatVal-=20;
 			}
-			document.getElementById("fval").innerHTML = fatVal + '%';
+			document.getElementById("fval").innerHTML = fatVal + 'g';
 			checkPercent();
 		}
 		
@@ -69,7 +69,7 @@
 			if(carbVal <= 80){
 				carbVal+=20;
 			}
-			document.getElementById("cval").innerHTML = carbVal + '%';
+			document.getElementById("cval").innerHTML = carbVal + 'g';
 			checkPercent();
 		}
 		
@@ -77,7 +77,7 @@
 			if(carbVal >= 20){
 				carbVal-=20;
 			}
-			document.getElementById("cval").innerHTML = carbVal + '%';
+			document.getElementById("cval").innerHTML = carbVal + 'g';
 			checkPercent();
 		}
 		
@@ -105,9 +105,9 @@
 			if (delta == 100){
 				document.getElementById("goButton").innerHTML = "Tap the buttons to add ingredients!";
 			}else if(delta > 0){
-				document.getElementById("goButton").innerHTML = delta + "% to go!";
+				document.getElementById("goButton").innerHTML = delta + "g to go!";
 			}else if (delta < 0){
-				document.getElementById("goButton").innerHTML = -delta + "% too much!";
+				document.getElementById("goButton").innerHTML = -delta + "g too much!";
 			}else{
 				document.getElementById("goButton").innerHTML = "Make my GranolaPod!";
 				document.getElementById("go_button").style.backgroundColor = "#20aa71";
@@ -146,7 +146,7 @@
 							<h3>+</h3>
 						</div>
 						<div class="middle_info">
-							<h2 id="pval">0%</h2>
+							<h2 id="pval">0g</h2>
 						</div>
 						<div class="button" onclick="pDown()">
 							<h3>-</h3>
@@ -159,7 +159,7 @@
 							<h3>+</h3>
 						</div>
 						<div class="middle_info">
-							<h2 id="fval">0%</h2>
+							<h2 id="fval">0g</h2>
 						</div>
 						<div class="button" onclick="fDown()">
 							<h3>-</h3>
@@ -172,7 +172,7 @@
 							<h3>+</h3>
 						</div>
 						<div class="middle_info">
-							<h2 id="cval">0%</h2>
+							<h2 id="cval">0g</h2>
 						</div>
 						<div class="button" onclick="cDown()">
 							<h3>-</h3>
