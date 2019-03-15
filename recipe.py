@@ -1,4 +1,6 @@
 #/'/
+def clamp(x, minimum, maximum):
+    return max(minimum, min(x, maximum))
 
 def getRecipe(protein, fat, carbs):
     """
@@ -18,7 +20,16 @@ def getRecipe(protein, fat, carbs):
     granola: Amount of dispenses (Paddlewheel divisions) for granola
     seeds:   Amount of dispenses for seeds
     crans:   Amount of dispenses for cranberries
+
+    NOTE: This function doesn't work very well since lots of solutions to the system equation involve negative numbers.
+          Better solutions do exist that account for this, but ran out of time.
+
+          Don't let user order 0    0   0 or 0   0   12.3
     """
+
+    # Number of total dispenses for the cup
+    NUM_DISPENSES = 2
+
 
     # See https://docs.google.com/spreadsheets/d/1G05H-1YGS_nNvjeI72Ml56ZUtodRG3egraHT0ixtrEo/edit#gid=0
     # for calculation of these values
@@ -26,21 +37,36 @@ def getRecipe(protein, fat, carbs):
               'seeds'  : 0       * carbs - 0.10113 * protein + 0.12136 * fat,
               'crans'  : 0.04065 * carbs - 0.30438 * protein + 0.10103 * fat}
 
-    recipe_ints   = {x:round(recipe[x]) for x in recipe.keys()}
-    recipe_errors = {x:abs(round(recipe[x]) - recipe[x]) for x in recipe.keys()}
-    recipe_errors['granola'] = 5
+    # Round the value to nearest integer and clamp it to 0 and 2
+    recipe_ints   = {x:clamp(round(recipe[x]), 0, 2) for x in recipe.keys()}
 
-    sorted_errors = sorted(recipe_errors, key=recipe_errors.__getitem__)
+    # Find the error created by the round and clamp
+    recipe_errors = {x:abs(recipe_ints[x] - recipe[x]) for x in recipe.keys()}
+
+    # Sort the errors for each ingredient
+    sorted_errors_keys = sorted(recipe_errors, key=recipe_errors.__getitem__)
+
+    # Initialize dispense values
+    dispenses = 0
+    granola = 0
+    seeds = 0
+    crans = 0
+
+    # Set the count values to be returns
+    for error_key in sorted_errors_keys:
+        ing_dispenses = recipe_ints[error_key]
+
+        for i in range(ing_dispenses):
+            if error_key == 'granola':
+                granola += 1
+            elif error_key == 'seeds':
+                seeds += 1
+            elif error_key == 'crans':
+                crans += 1
+
+            dispenses += 1
+            if dispenses >= NUM_DISPENSES:
+                return (granola, seeds, crans)
 
     return (granola, seeds, crans)
 
-def main():
-    carbs = 49.2
-    protein = 9.6
-    fat = 24.48
-
-    order = getRecipe(protein, fat, carbs)
-    print(order)
-
-if __name__ == '__main__':
-    main()
