@@ -94,7 +94,7 @@ def newRequestCallback(pval, fval, cval):
 	print("Fat: " +str(fval) + "%")
 	print("Carbs: " + str(cval) + "%\n")
 
-	granola, seeds, crans = getRecipe(pval, fval, cvl)
+	granola, seeds, crans = getRecipe(pval, fval, cval)
 	print("Order Calculated:")
 	print("Protein: " +str(granola) + "%")
 	print("Fat: " +str(seeds) + "%")
