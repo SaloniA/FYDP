@@ -30,7 +30,7 @@
 			var d = new Date;
 			d.setTime(d.getTime() + 24*60*60*1000*30);
 			document.cookie = "style=" + style + ";path=/;expires=" + d.toGMTString();
-			checkPercent();
+			checkOrder();
 		}
 		
 		function pUp(){
@@ -39,7 +39,7 @@
 				proteinVal = valRound(proteinVal, 1)
 			}
 			document.getElementById("pval").innerHTML = proteinVal + 'g';
-			checkPercent();
+			checkOrder();
 		}
 		
 		function pDown(){
@@ -48,7 +48,7 @@
 				proteinVal = valRound(proteinVal, 1)
 			}
 			document.getElementById("pval").innerHTML = proteinVal + 'g';
-			checkPercent();
+			checkOrder();
 		}
 		
 		function fUp(){
@@ -57,7 +57,7 @@
 				fatVal = valRound(fatVal, 2)
 			}
 			document.getElementById("fval").innerHTML = fatVal + 'g';
-			checkPercent();
+			checkOrder();
 		}
 		
 		function fDown(){
@@ -66,7 +66,7 @@
 				fatVal = valRound(fatVal, 2)
 			}
 			document.getElementById("fval").innerHTML = fatVal + 'g';
-			checkPercent();
+			checkOrder();
 		}
 		
 		function cUp(){
@@ -75,7 +75,7 @@
 				carbVal = valRound(carbVal, 1)
 			}
 			document.getElementById("cval").innerHTML = carbVal + 'g';
-			checkPercent();
+			checkOrder();
 		}
 		
 		function cDown(){
@@ -84,7 +84,7 @@
 				carbVal = valRound(carbVal, 1)
 			}
 			document.getElementById("cval").innerHTML = carbVal + 'g';
-			checkPercent();
+			checkOrder();
 		}
 		
 		function clamp(min,mid,max){
@@ -96,8 +96,7 @@
 			return Math.round(val * scale)/scale
 		}
 		
-		function checkPercent(){
-			var delta = 100 - proteinVal - fatVal - carbVal;
+		function checkOrder(){
 			var buttoncolor;
 			
 			var v = document.cookie.match('(^|;) ?' + 'style' + '=([^;]*)(;|$)');
@@ -113,11 +112,9 @@
 			
 			
 			document.getElementById("go_button").style.backgroundColor = buttoncolor;
-			if (delta == 100){
+			if (proteinVal == 0 && fatVal == 0 && carbVal == 0){
 				document.getElementById("goButton").innerHTML = "Tap the buttons to add ingredients!";
-			}else if(delta > 0){
-				document.getElementById("goButton").innerHTML = delta + "g to go!";
-			}else if (delta < 0){
+			}else if (proteinVal == 0 && fatVal == 0 carbVal == 12.3){
 				document.getElementById("goButton").innerHTML = -delta + "g too much!";
 			}else{
 				document.getElementById("goButton").innerHTML = "Make my GranolaPod!";
@@ -126,8 +123,8 @@
 		}
 		
 		function makePod(){
-			delta = 100 - proteinVal - fatVal - carbVal;
-			if(delta == 0){
+			if(!(proteinVal == 0 && fatVal == 0 && carbVal == 0) && 
+			   !(proteinVal == 0 && fatVal == 0 && carbVal == 12.3) ){
 				var goform = document.forms['run'];
 				goform.elements["pval"].value = proteinVal;
 				goform.elements["fval"].value = fatVal;
@@ -142,7 +139,7 @@
 	</script>	
 </head>
 
-<body onload="checkPercent()">
+<body onload="checkOrder()">
 	<div id="background_container">
 		<div id="flipper">
 			<div id="main_window">
