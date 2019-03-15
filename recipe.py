@@ -38,7 +38,7 @@ def getRecipe(protein, fat, carbs):
               'crans'  : 0.04065 * carbs - 0.30438 * protein + 0.10103 * fat}
 
     # Round the value to nearest integer and clamp it to 0 and 2
-    recipe_ints   = {x:clamp(round(recipe[x]), 0, 2) for x in recipe.keys()}
+    recipe_ints   = {x:clamp(int(round(recipe[x])), 0, 2) for x in recipe.keys()}
 
     # Find the error created by the round and clamp
     recipe_errors = {x:abs(recipe_ints[x] - recipe[x]) for x in recipe.keys()}
