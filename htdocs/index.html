@@ -34,50 +34,50 @@
 		}
 		
 		function pUp(){
-			if(proteinVal <= 3){
-				proteinVal+=1;
+			if(proteinCount <= 3){
+				proteinCount+=1;
 			}
-			document.getElementById("pval").innerHTML = valRound(proteinVal * 2.4, 1) + 'g';
+			document.getElementById("pval").innerHTML = valRound(proteinCount * 2.4, 1) + 'g';
 			checkOrder();
 		}
 		
 		function pDown(){
-			if(proteinVal >=1){
-				proteinVal-=1;
+			if(proteinCount >=1){
+				proteinCount-=1;
 			}
-			document.getElementById("pval").innerHTML = valRound(proteinVal * 2.4, 1) + 'g';
+			document.getElementById("pval").innerHTML = valRound(proteinCount * 2.4, 1) + 'g';
 			checkOrder();
 		}
 		
 		function fUp(){
-			if(fatVal <= 3){
-				fatVal+=1;
+			if(fatCount <= 3){
+				fatCount+=1;
 			}
-			document.getElementById("fval").innerHTML = valRound(fatVal, 6.12, 2) + 'g';
+			document.getElementById("fval").innerHTML = valRound(fatCount, 6.12, 2) + 'g';
 			checkOrder();
 		}
 		
 		function fDown(){
-			if(fatVal >= 1){
-				fatVal-=1;
+			if(fatCount >= 1){
+				fatCount-=1;
 			}
-			document.getElementById("fval").innerHTML = valRound(fatVal, 6.12, 2) + 'g';
+			document.getElementById("fval").innerHTML = valRound(fatCount, 6.12, 2) + 'g';
 			checkOrder();
 		}
 		
 		function cUp(){
-			if(carbVal <= 3){
-				carbVal+=1;
+			if(carbCount <= 3){
+				carbCount+=1;
 			}
-			document.getElementById("cval").innerHTML = valRound(carbVal * 12.3, 1) + 'g';
+			document.getElementById("cval").innerHTML = valRound(carbCount * 12.3, 1) + 'g';
 			checkOrder();
 		}
 		
 		function cDown(){
-			if(carbVal >= 1){
-				carbVal-=1;
+			if(carbCount >= 1){
+				carbCount-=1;
 			}
-			document.getElementById("cval").innerHTML = valRound(carbVal * 12.3, 1) + 'g';
+			document.getElementById("cval").innerHTML = valRound(carbCount * 12.3, 1) + 'g';
 			checkOrder();
 		}
 		
@@ -110,9 +110,9 @@
 			
 			//var precision = Math.Pow(10, -4)
 			document.getElementById("go_button").style.backgroundColor = buttoncolor;
-			if (proteinVal == 0 && fatVal == 0 && carbVal == 0){
+			if (proteinCount == 0 && fatCount == 0 && carbCount == 0){
 				document.getElementById("goButton").innerHTML = "Tap the buttons to add ingredients!";
-			}else if (proteinVal == 0 && fatVal == 0 && carbVal == 1)){
+			}else if (proteinCount == 0 && fatCount == 0 && carbCount == 1)){
 				document.getElementById("goButton").innerHTML = -delta + "need more ingredients!";
 			}else{
 				document.getElementById("goButton").innerHTML = "Make my GranolaPod!";
@@ -121,12 +121,12 @@
 		}
 		
 		function makePod(){
-			if(!(proteinVal == 0 && fatVal == 0 && carbVal == 0) && 
-			   !(proteinVal == 0 && fatVal == 0 && carbVal == 1)){
+			if(!(proteinCount == 0 && fatCount == 0 && carbCount == 0) && 
+			   !(proteinCount == 0 && fatCount == 0 && carbCount == 1)){
 				var goform = document.forms['run'];
-				goform.elements["pval"].value = valRound(proteinVal * 2.4, 1);
-				goform.elements["fval"].value = valRound(fatVal, 6.12, 2);
-				goform.elements["cval"].value = valRound(carbVal * 12.3, 1);
+				goform.elements["pval"].value = valRound(proteinCount * 2.4, 1);
+				goform.elements["fval"].value = valRound(fatCount, 6.12, 2);
+				goform.elements["cval"].value = valRound(carbCount * 12.3, 1);
 
 				document.getElementById('background_container').className += "flipped";
 				
