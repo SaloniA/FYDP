@@ -3,6 +3,7 @@
 import smbus
 import time
 from enum import Enum
+from recipe import getRecipe
 
 class Direction(Enum):
 	CCW = 2
@@ -93,11 +94,19 @@ def newRequestCallback(pval, fval, cval):
 	print("Fat: " +str(fval) + "%")
 	print("Carbs: " + str(cval) + "%\n")
 
+	granola, seeds, crans = getRecipe(pval, fval, cvl)
+	print("Order Calculated:")
+	print("Protein: " +str(granola) + "%")
+	print("Fat: " +str(seeds) + "%")
+	print("Carbs: " + str(crans) + "%\n")
 
-	beginProcess()
+	beginProcess(granola, seeds, crans)
 
 
-def beginProcess():
+def beginProcess(granola, seeds, crans):
+
+	TIME_PER_DISPENSE = 0.5
+
 	#Calibrate Gantry Cart
 	sendCommand(0x4,Command.CLEAR_POLL.value,0,0,0)
 	sendCommand(0x5,Command.CLEAR_POLL.value,0,0,0)
@@ -126,7 +135,7 @@ def beginProcess():
 
 	#Dispense First Ingredient
 	sendCommand(0x4,Command.STEPPER_MOVE.value,Direction.CW.value,40,0)
-	time.sleep(0.5)
+	time.sleep(TIME_PER_DISPENSE * granola)
 	sendCommand(0x4,Command.STEPPER_STOP.value,0,0,0)
 	time.sleep(2)
 
@@ -139,7 +148,7 @@ def beginProcess():
 
 	#Dispense Second Ingredient
 	sendCommand(0x5,Command.STEPPER_MOVE.value,Direction.CW.value,40,0)
-	time.sleep(0.5)
+	time.sleep(TIME_PER_DISPENSE * seeds)
 	sendCommand(0x5,Command.STEPPER_STOP.value,0,0,0)
 	time.sleep(2)
 
@@ -152,7 +161,7 @@ def beginProcess():
 
 	#Dispense Third Ingredient
 	sendCommand(0x6,Command.STEPPER_MOVE.value,Direction.CW.value,40,0)
-	time.sleep(0.5)
+	time.sleep(TIME_PER_DISPENSE * crans)
 	sendCommand(0x6,Command.STEPPER_STOP.value,0,0,0)
 	time.sleep(2)
 
