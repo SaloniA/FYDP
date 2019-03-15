@@ -16,9 +16,9 @@
 	<link id="styles" href="" rel="stylesheet" type="text/css">
 	
 	<script>
-		var proteinVal = 0;
-		var fatVal = 0;
-		var carbVal = 0;
+		var proteinCount = 0;
+		var fatCount = 0;
+		var carbCount = 0;
 		var style = 2; //1: dark, 2: light
 		
 		function nextStyle() {
@@ -34,56 +34,50 @@
 		}
 		
 		function pUp(){
-			if(proteinVal <= 7.2){
-				proteinVal+=2.4;
-				proteinVal = valRound(proteinVal, 1)
+			if(proteinVal <= 3){
+				proteinVal+=1;
 			}
-			document.getElementById("pval").innerHTML = proteinVal + 'g';
+			document.getElementById("pval").innerHTML = valRound(proteinVal * 2.4, 1) + 'g';
 			checkOrder();
 		}
 		
 		function pDown(){
-			if(proteinVal >=2.4){
-				proteinVal-=2.4;
-				proteinVal = valRound(proteinVal, 1)
+			if(proteinVal >=1){
+				proteinVal-=1;
 			}
-			document.getElementById("pval").innerHTML = proteinVal + 'g';
+			document.getElementById("pval").innerHTML = valRound(proteinVal * 2.4, 1) + 'g';
 			checkOrder();
 		}
 		
 		function fUp(){
-			if(fatVal <= 18.36){
-				fatVal+=6.12;
-				fatVal = valRound(fatVal, 2)
+			if(fatVal <= 3){
+				fatVal+=1;
 			}
-			document.getElementById("fval").innerHTML = fatVal + 'g';
+			document.getElementById("fval").innerHTML = valRound(fatVal, 6.12, 2) + 'g';
 			checkOrder();
 		}
 		
 		function fDown(){
-			if(fatVal >= 6.12){
-				fatVal-=6.12;
-				fatVal = valRound(fatVal, 2)
+			if(fatVal >= 1){
+				fatVal-=1;
 			}
-			document.getElementById("fval").innerHTML = fatVal + 'g';
+			document.getElementById("fval").innerHTML = valRound(fatVal, 6.12, 2) + 'g';
 			checkOrder();
 		}
 		
 		function cUp(){
-			if(carbVal <= 36.9){
-				carbVal+=12.3;
-				carbVal = valRound(carbVal, 1)
+			if(carbVal <= 3){
+				carbVal+=1;
 			}
-			document.getElementById("cval").innerHTML = carbVal + 'g';
+			document.getElementById("cval").innerHTML = valRound(carbVal * 12.3, 1) + 'g';
 			checkOrder();
 		}
 		
 		function cDown(){
-			if(carbVal >= 12.3){
-				carbVal-=12.3;
-				carbVal = valRound(carbVal, 1)
+			if(carbVal >= 1){
+				carbVal-=1;
 			}
-			document.getElementById("cval").innerHTML = carbVal + 'g';
+			document.getElementById("cval").innerHTML = valRound(carbVal * 12.3, 1) + 'g';
 			checkOrder();
 		}
 		
@@ -114,11 +108,11 @@
 				buttoncolor = "#eeeeee";
 			}
 			
-			var precision = Math.Pow(10, -4)
+			//var precision = Math.Pow(10, -4)
 			document.getElementById("go_button").style.backgroundColor = buttoncolor;
-			if (floatEq(proteinVal, 0, precision) && floatEq(fatVal, 0, precision) && floatEq(carbVal, 0, precision)){
+			if (proteinVal == 0 && fatVal == 0 && carbVal == 0){
 				document.getElementById("goButton").innerHTML = "Tap the buttons to add ingredients!";
-			}else if (floatEq(proteinVal, 0, precision) && floatEq(fatVal, 0, precision) && floatEq(carbVal, 12.3, precision)){
+			}else if (proteinVal == 0 && fatVal == 0 && carbVal == 1)){
 				document.getElementById("goButton").innerHTML = -delta + "need more ingredients!";
 			}else{
 				document.getElementById("goButton").innerHTML = "Make my GranolaPod!";
@@ -127,12 +121,12 @@
 		}
 		
 		function makePod(){
-			if(!(floatEq(proteinVal, 0, precision) && floatEq(fatVal, 0, precision) && floatEq(carbVal, 0, precision)) && 
-			   !(floatEq(proteinVal, 0, precision) && floatEq(fatVal, 0, precision) && floatEq(carbVal, 12.3, precision))){
+			if(!(proteinVal == 0 && fatVal == 0 && carbVal == 0) && 
+			   !(proteinVal == 0 && fatVal == 0 && carbVal == 1)){
 				var goform = document.forms['run'];
-				goform.elements["pval"].value = proteinVal;
-				goform.elements["fval"].value = fatVal;
-				goform.elements["cval"].value = carbVal;
+				goform.elements["pval"].value = valRound(proteinVal * 2.4, 1);
+				goform.elements["fval"].value = valRound(fatVal, 6.12, 2);
+				goform.elements["cval"].value = valRound(carbVal * 12.3, 1);
 
 				document.getElementById('background_container').className += "flipped";
 				
