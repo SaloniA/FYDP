@@ -36,6 +36,7 @@
 		function pUp(){
 			if(proteinVal <= 7.2){
 				proteinVal+=2.4;
+				proteinVal = valRound(proteinVal, 1)
 			}
 			document.getElementById("pval").innerHTML = proteinVal + 'g';
 			checkPercent();
@@ -44,6 +45,7 @@
 		function pDown(){
 			if(proteinVal >=2.4){
 				proteinVal-=2.4;
+				proteinVal = valRound(proteinVal, 1)
 			}
 			document.getElementById("pval").innerHTML = proteinVal + 'g';
 			checkPercent();
@@ -52,6 +54,7 @@
 		function fUp(){
 			if(fatVal <= 18.36){
 				fatVal+=6.12;
+				fatVal = valRound(fatVal, 2)
 			}
 			document.getElementById("fval").innerHTML = fatVal + 'g';
 			checkPercent();
@@ -60,6 +63,7 @@
 		function fDown(){
 			if(fatVal >= 6.12){
 				fatVal-=6.12;
+				fatVal = valRound(fatVal, 2)
 			}
 			document.getElementById("fval").innerHTML = fatVal + 'g';
 			checkPercent();
@@ -68,6 +72,7 @@
 		function cUp(){
 			if(carbVal <= 36.9){
 				carbVal+=12.3;
+				carbVal = valRound(carbVal, 1)
 			}
 			document.getElementById("cval").innerHTML = carbVal + 'g';
 			checkPercent();
@@ -76,6 +81,7 @@
 		function cDown(){
 			if(carbVal >= 12.3){
 				carbVal-=12.3;
+				carbVal = valRound(carbVal, 1)
 			}
 			document.getElementById("cval").innerHTML = carbVal + 'g';
 			checkPercent();
@@ -83,6 +89,11 @@
 		
 		function clamp(min,mid,max){
 			return mid < min ? min : mid < max ? mid : max;
+		}
+		
+		function valRound(val, digits){
+			scale = Math.pow(10, digits)
+			return Math.round(val * scale)/scale
 		}
 		
 		function checkPercent(){
