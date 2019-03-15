@@ -96,6 +96,10 @@
 			return Math.round(val * scale)/scale
 		}
 		
+		function floatEq(val1, val2, precision){
+			return (Math.abs(val1 - val2) < precision)
+		}
+		
 		function checkOrder(){
 			var buttoncolor;
 			
@@ -110,12 +114,12 @@
 				buttoncolor = "#eeeeee";
 			}
 			
-			
+			var precision = Math.Pow(10, -4)
 			document.getElementById("go_button").style.backgroundColor = buttoncolor;
-			if (proteinVal == 0 && fatVal == 0 && carbVal == 0){
+			if (floatEq(proteinVal, 0, precision) && floatEq(fatVal, 0, precision) && floatEq(carbVal, 0, precision)){
 				document.getElementById("goButton").innerHTML = "Tap the buttons to add ingredients!";
-			}else if (proteinVal == 0 && fatVal == 0 carbVal == 12.3){
-				document.getElementById("goButton").innerHTML = -delta + "g too much!";
+			}else if (floatEq(proteinVal, 0, precision) && floatEq(fatVal, 0, precision) && floatEq(carbVal, 12.3, precision)){
+				document.getElementById("goButton").innerHTML = -delta + "need more ingredients!";
 			}else{
 				document.getElementById("goButton").innerHTML = "Make my GranolaPod!";
 				document.getElementById("go_button").style.backgroundColor = "#20aa71";
@@ -123,8 +127,8 @@
 		}
 		
 		function makePod(){
-			if(!(proteinVal == 0 && fatVal == 0 && carbVal == 0) && 
-			   !(proteinVal == 0 && fatVal == 0 && carbVal == 12.3) ){
+			if(!(floatEq(proteinVal, 0, precision) && floatEq(fatVal, 0, precision) && floatEq(carbVal, 0, precision)) && 
+			   !(floatEq(proteinVal, 0, precision) && floatEq(fatVal, 0, precision) && floatEq(carbVal, 12.3, precision))){
 				var goform = document.forms['run'];
 				goform.elements["pval"].value = proteinVal;
 				goform.elements["fval"].value = fatVal;
