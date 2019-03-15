@@ -90,15 +90,15 @@ def waitOnUnity(address,command,response):
 
 def newRequestCallback(pval, fval, cval):
 	print("New Request Received:")
-	print("Protein: " +str(pval) + "%")
-	print("Fat: " +str(fval) + "%")
-	print("Carbs: " + str(cval) + "%\n")
+	print("Protein: " +str(pval) + "g")
+	print("Fat: " +str(fval) + "g")
+	print("Carbs: " + str(cval) + "g\n")
 
 	granola, seeds, crans = getRecipe(float(pval), float(fval), float(cval))
 	print("Order Calculated:")
-	print("Protein: " +str(granola) + "%")
-	print("Fat: " +str(seeds) + "%")
-	print("Carbs: " + str(crans) + "%\n")
+	print("Granola: " +str(granola))
+	print("Sunflower Seeds: " +str(seeds))
+	print("Cranberries: " + str(crans) + "\n")
 
 	beginProcess(granola, seeds, crans)
 
