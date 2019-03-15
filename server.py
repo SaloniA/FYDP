@@ -8,9 +8,9 @@ import time
 def index():
 	postdata = request.body.read()
 	if len(postdata) > 0:
-		pval = request.params.get('pval', type=int)
-		fval = request.params.get('fval', type=int)
-		cval = request.params.get('cval', type=int)
+		pval = request.params.get('pval', type=float)
+		fval = request.params.get('fval', type=float)
+		cval = request.params.get('cval', type=float)
 		granolapods.newRequestCallback(pval, fval, cval)
 	return template('./htdocs/index.html')
 
